@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import { useLocation, Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   HomeIcon,
   SearchIcon,
   LayoutDashboardIcon,
   MenuIcon,
-  XIcon
-} from 'lucide-react';
+  XIcon,
+} from "lucide-react";
 
-import { useWallet } from '../../context/WalletContext';
-import { WalletConnectModal } from '../modals/WalletConnectModal';
-import { Button } from '../ui/Button';
-import { Logo } from '../ui/Logo';
+import { useWallet } from "../../context/WalletContext";
+import { WalletConnectModal } from "../modals/WalletConnectModal";
+import { Button } from "../ui/Button";
+import { Logo } from "../ui/Logo";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,23 +22,23 @@ export function Navbar() {
   const { pathname } = useLocation();
 
   const navLinks = [
-    { name: 'Home', path: '/', icon: <HomeIcon size={16} /> },
-    { name: 'Browse', path: '/browse', icon: <SearchIcon size={16} /> }
+    { name: "Home", path: "/", icon: <HomeIcon size={16} /> },
+    { name: "Browse", path: "/browse", icon: <SearchIcon size={16} /> },
   ];
 
   if (isConnected) {
     navLinks.push({
-      name: 'Dashboard',
-      path: '/user',
-      icon: <LayoutDashboardIcon size={16} />
+      name: "Dashboard",
+      path: "/user",
+      icon: <LayoutDashboardIcon size={16} />,
     });
   }
 
   if (isAdmin) {
     navLinks.push({
-      name: 'Admin',
-      path: '/admin',
-      icon: <LayoutDashboardIcon size={16} />
+      name: "Admin",
+      path: "/admin",
+      icon: <LayoutDashboardIcon size={16} />,
     });
   }
 
@@ -53,14 +53,14 @@ export function Navbar() {
               </Link>
               <div className="hidden md:block ml-10">
                 <div className="flex items-center space-x-4">
-                  {navLinks.map(link => (
+                  {navLinks.map((link) => (
                     <Link
                       key={link.path}
                       to={link.path}
                       className={`${
                         pathname === link.path
-                          ? 'bg-gray-700 text-white'
-                          : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                          ? "bg-gray-700 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white"
                       } px-3 py-2 rounded-md text-sm font-medium flex items-center`}
                     >
                       <span className="mr-1">{link.icon}</span>
@@ -107,19 +107,19 @@ export function Navbar() {
           <motion.div
             className="md:hidden"
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
+            animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {navLinks.map(link => (
+              {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
                   className={`${
                     pathname === link.path
-                      ? 'bg-gray-700 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   } px-3 py-2 rounded-md text-base font-medium flex items-center`}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -134,7 +134,11 @@ export function Navbar() {
                     {address?.substring(0, 6)}...
                     {address?.substring(address.length - 4)}
                   </span>
-                  <Button onClick={disconnectWallet} variant="secondary" fullWidth>
+                  <Button
+                    onClick={disconnectWallet}
+                    variant="secondary"
+                    fullWidth
+                  >
                     Disconnect
                   </Button>
                 </div>
@@ -156,7 +160,10 @@ export function Navbar() {
         )}
       </nav>
 
-      <WalletConnectModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <WalletConnectModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 }
