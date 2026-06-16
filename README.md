@@ -41,9 +41,6 @@ Create a `.env.local` file in the project root with the following variables:
 ```env
 # Wallet address that has admin access to the platform
 VITE_ADMIN_ADDRESS=0xYourWalletAddressHere
-
-# Set to "true" to enable the Sepolia testnet in the chain list
-VITE_ENABLE_TESTNETS=false
 ```
 
 > `.env.local` is git-ignored and will never be committed.

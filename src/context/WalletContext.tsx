@@ -2,12 +2,15 @@ import React, { useState, useEffect, createContext, useContext } from "react";
 
 declare global {
   interface Window {
+    // Type definition for the Ethereum provider injected by MetaMask
     ethereum?: {
       request: (args: {
         method: string;
         params?: unknown[];
       }) => Promise<unknown>;
+      // Event listeners for account and chain changes
       on: (event: string, handler: (...args: unknown[]) => void) => void;
+      // Method to remove event listeners
       removeListener: (
         event: string,
         handler: (...args: unknown[]) => void,
@@ -94,6 +97,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       window.location.reload();
     };
 
+    // Listen for account and chain changes to update the wallet state accordingly
     window.ethereum.on("accountsChanged", handleAccountsChanged);
     window.ethereum.on("chainChanged", handleChainChanged);
 
