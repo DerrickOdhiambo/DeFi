@@ -1,166 +1,89 @@
-# Developer Home Assessment
+# DeFi Real Estate
 
-Thank you for your interest in joining our team.
-
-Please complete the task that best matches your area of expertise. The objective of this assessment is to evaluate your technical skills, code quality, and ability to work within an existing project.
-
-## Submission Requirements
-
-* Complete the selected task(s).
-* Record a short demonstration video (3–5 minutes).
-* Submit your source code and video.
+A decentralized real estate investment platform built with React, TypeScript, Vite, and wagmi.
 
 ---
 
-# Option 1: Frontend Developer
-
-**Estimated Time:** 30–60 Minutes
-
-## Objective
-
-Implement a new feature or improve an existing component within the provided project.
-
-## Requirements
-
-Choose one of the following:
+## Recent Changes — `feat/wallet`
 
 ### A. Wallet Integration
 
-* Connect MetaMask wallet.
-* Display connected wallet address.
-* Handle account and network changes.
+Real MetaMask wallet connection replacing the previous mock implementation.
 
-### B. Component Enhancement
+**Files changed:**
 
-* Add a loading state to an existing button component.
-* Show a loading spinner.
-* Disable the button while loading.
-* Preserve existing functionality and styling.
+- `src/context/WalletContext.tsx` — core wallet logic
+- `src/components/modals/WalletConnectModal.tsx` — connect flow
+- `src/pages/Home.tsx` — CTA section wallet state
+- `wagmi.js` — chain/transport configuration
 
-## Deliverables
+**What was implemented:**
 
-* Source code
-* Demo video showing the implementation
+- **Connect MetaMask** — calls `window.ethereum.request({ method: 'eth_requestAccounts' })` to trigger the MetaMask popup
+- **Display connected address** — real wallet address shown in the Navbar and Home CTA section (truncated: `0x1234...5678`)
+- **Account change handling** — listens to MetaMask's `accountsChanged` event; updates address on switch, disconnects if wallet is locked
+- **Network change handling** — listens to `chainChanged` event and reloads the page (MetaMask recommended approach)
+- **Admin access** — wallet address is compared against `VITE_ADMIN_ADDRESS`; matching address unlocks the Admin dashboard
+- **Home CTA** — shows connected address + "Browse Properties" when connected, "Connect Wallet" modal trigger when not
+- **CORS fix** — wagmi configured with explicit public RPC transports per chain to avoid `eth.merkle.io` CORS errors in development
 
----
+### B. Button Loading State (Spinner)
 
-# Option 2: Web3 Developer
-
-**Estimated Time:** 45–60 Minutes
-
-## Objective
-
-Integrate blockchain functionality into the provided project.
-
-## Requirements
-
-1. Connect to any deployed smart contract.
-2. Create a service or API that reads data from the contract.
-3. Display the result through:
-
-   * API response
-   * Console output
-   * Simple UI (optional)
-
-### Bonus
-
-* Wallet integration
-* Contract write function
-* Testnet deployment
-
-## Deliverables
-
-* Source code
-* Deployment details (if applicable)
-* Demo video
+- `src/components/ui/Spinner.tsx` — spinner component with animated SVG circle
+- `src/components/modals/WalletConnectModal.tsx` — `handleConnect` is now `async`/`await`; spinner replaces the `Connect →` arrow while loading; buttons disabled during pending connection; modal stays open until MetaMask confirms (fixes inability to reconnect without page refresh)
 
 ---
 
-# Option 3: Full-Stack Developer
+## Environment Variables
 
-**Estimated Time:** 45–60 Minutes
+Create a `.env.local` file in the project root with the following variables:
 
-## Objective
+```env
+# Wallet address that has admin access to the platform
+VITE_ADMIN_ADDRESS=0xYourWalletAddressHere
 
-Build a simple end-to-end feature.
-
-## Requirements
-
-### Backend
-
-Create an API endpoint:
-
-```http
-GET /api/properties
+# Set to "true" to enable the Sepolia testnet in the chain list
+VITE_ENABLE_TESTNETS=false
 ```
 
-Return mock property data including:
+> `.env.local` is git-ignored and will never be committed.
 
-* ID
-* Name
-* Location
-* Price
-* Image
-* Annual Yield
+### Getting your admin address
 
-### Frontend
+1. Open MetaMask
+2. Click your account name — it copies the full address
+3. Paste it as the value of `VITE_ADMIN_ADDRESS`
 
-Display the data in responsive cards showing:
+### Testnets
 
-* Property Image
-* Property Name
-* Location
-* Price
-* Annual Yield
-* Invest Now Button
-
-## Deliverables
-
-* Backend implementation
-* Frontend implementation
-* Demo video
+Set `VITE_ENABLE_TESTNETS=true` to add the Sepolia testnet to the supported chains list.
 
 ---
 
-# Option 4: Mobile Developer
+## RPC Transports
 
-**Estimated Time:** 30–60 Minutes
+The following public CORS-friendly RPC endpoints are configured in `wagmi.js` (no API key required):
 
-## Objective
-
-Create a mobile version of an existing page from the project.
-
-## Requirements
-
-Use one of the following:
-
-* Flutter
-* React Native
-* Kotlin
-
-The implementation should:
-
-* Be responsive on mobile devices
-* Provide a clean user experience
-* Follow platform design standards
-* Support common screen sizes
-
-## Deliverables
-
-* Source code
-* Demo video
+| Chain            | RPC Endpoint                   |
+| ---------------- | ------------------------------ |
+| Ethereum Mainnet | `https://cloudflare-eth.com`   |
+| Polygon          | `https://polygon.llamarpc.com` |
+| Optimism         | `https://mainnet.optimism.io`  |
+| Arbitrum         | `https://arb1.arbitrum.io/rpc` |
+| Base             | `https://mainnet.base.org`     |
+| Sepolia          | `https://rpc.sepolia.org`      |
 
 ---
 
-# Evaluation Criteria
+## Getting Started
 
-Submissions will be evaluated based on:
+```bash
+# Install dependencies
+npm install
 
-* Functionality
-* Code quality
-* Project structure
-* Maintainability
-* Problem-solving approach
-* Attention to detail
+# Create your environment file
+cp .env.local.example .env.local  # then fill in your values
 
-We look forward to reviewing your submission.
+# Start the dev server
+npm run client
+```

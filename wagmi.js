@@ -11,6 +11,7 @@ import {
 
 export const config = getDefaultConfig({
   appName: "DeFi Real Estate",
+  // The project ID is used to identify your app to the WalletConnect cloud service
   projectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID ?? "METAMASK_ONLY",
   chains: [
     mainnet,
