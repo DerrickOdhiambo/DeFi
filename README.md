@@ -41,6 +41,7 @@ Create a `.env.local` file in the project root with the following variables:
 ```env
 # Wallet address that has admin access to the platform
 VITE_ADMIN_ADDRESS=0xYourWalletAddressHere
+VITE_WALLETCONNECT_PROJECT_ID=ProjectID
 ```
 
 > `.env.local` is git-ignored and will never be committed.
@@ -50,10 +51,6 @@ VITE_ADMIN_ADDRESS=0xYourWalletAddressHere
 1. Open MetaMask
 2. Click your account name — it copies the full address
 3. Paste it as the value of `VITE_ADMIN_ADDRESS`
-
-### Testnets
-
-Set `VITE_ENABLE_TESTNETS=true` to add the Sepolia testnet to the supported chains list.
 
 ---
 
